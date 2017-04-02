@@ -1,0 +1,32 @@
+SHOOT IN SPACE
+---------------------------
+World
+	Screen Size 1024x768
+
+	
+SpaceObject
+	Accelerate forward
+	Physics object	
+	Bounces off screen edges
+	Take damage
+	Explode when zero life
+	
+Player : SpaceObject	
+	Rotate 360 towards mouse
+	Accelerate forward on right click
+	Deceleare with time
+	Fire laser shots forward with left click
+	Collide with enemies
+	
+Asteroid : SpaceObject
+	Physics object
+	Randomly created of screen with velocity towards a point in side game area.
+	Takes damage from collision or laser shots
+
+Big  Asteroid : Asteroid
+	Explodes into small asteroids when destroyed
+	
+Small Asteroid : Asteroid
+	Explodes and dissaperas when destroyed
+	
+	

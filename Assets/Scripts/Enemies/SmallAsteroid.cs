@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class SmallAsteroid : Asteroid {
 
-	
-
-
     
+    void Awake()
+    {
+        EntityType = EntityType.SmallAsteroid;
+    }
 
 }

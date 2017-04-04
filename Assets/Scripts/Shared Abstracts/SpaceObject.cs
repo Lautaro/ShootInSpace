@@ -6,32 +6,16 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
-public class SpaceObject : MonoBehaviour
+public class SpaceObject : MonoBase
 {
-
-    [SerializeField]
-    protected AudioClip death;
-
-    [SerializeField]
-    protected AudioClip collision;
 
     [SerializeField]
     protected ParticleSystem deathAnimation;
     [SerializeField]
     protected ParticleSystem damageAnimation;
+    
     protected float deathDelay = 0f;
-
-    protected AudioSource audioPlayer;
-    /*
-         
-Accelerate forward
-Physics object	
-Bounces off screen edges
-Take damage
-Explode when zero life
-Takes damage from collision or laser shots
-     */
-
+    
     [SerializeField]
     float hitPoints;
 
@@ -46,24 +30,18 @@ Takes damage from collision or laser shots
     // Use this for initialization
     protected virtual void Start()
     {
-        audioPlayer = GetComponent<AudioSource>();
         rb2d = GetComponent<Rigidbody2D>();
 
     }
 
-   protected virtual void OnCollisionEnter2D(Collision2D collider)
-    {
-        PlaySfx(collision,1f);
-
-    }
-
+ 
     protected void Accelerate(float force)
     {
 
         rb2d.AddForce(transform.up * force);
     }
 
-    protected void TakeDamage(float damage)
+    protected virtual void TakeDamage(float damage)
     {
         hitPoints -= damage;
 
@@ -74,24 +52,20 @@ Takes damage from collision or laser shots
 
     }
 
-    public void PlaySfx(AudioClip sfx, float volume)
+    public void PlaySfx(SfxNames sfx, float volume)
     {
-
-        audioPlayer.clip = sfx;
-        audioPlayer.volume = volume;
-        audioPlayer.Play();
-
+         SfxManager.PlaySfx(sfx.ToString(),0f,volume);
+         
     }
 
     protected virtual void Die()
     {
-        PlaySfx(death, 1f);
+        PlaySfx(SfxNames.Death, 1f);
         deathDelay = 4f;
         GetComponentInChildren<SpriteRenderer>().enabled = false;
         deathAnimation.Play();
         rb2d.simulated = false;
         GetComponent<Collider2D>().enabled = false;
-        Destroy(gameObject, deathDelay);
     }
 
 }

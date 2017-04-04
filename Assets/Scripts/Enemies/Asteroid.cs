@@ -15,16 +15,19 @@ public class Asteroid : SpaceObject {
 
     }
 
-    protected override void OnCollisionEnter2D(Collision2D collider)
+     void OnCollisionEnter2D(Collision2D collider)
     {
-        base.OnCollisionEnter2D(collider);
-
         if (collider.gameObject.name.Contains("Laser Shot"))
         {
+            SfxManager.PlaySfx(SfxNames.SmallExplosion.ToString());
             TakeDamage(1);
             damageAnimation.Play();
             Destroy(collider.gameObject);
+        }
 
+        if (collider.gameObject.name.Contains("Asteroid"))
+        {
+            SfxManager.PlaySfx(SfxNames.SmallRockHit.ToString());            
         }
     }
 

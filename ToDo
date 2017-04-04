@@ -1,0 +1,18 @@
+TO DO 
+
+GUI Shows energy level
+Shield absorbs impact but costs energy
+Shooting costs energy
+When shield fails player dies on impact and looses a life
+Respawn untill end of lifes
+Restart games on Game Over
+
+Big Asteroids leaves Energy Pick Up
+Big Asteroids can have three different sprite and collider shape
+Some kind of level wave system
+
+--- DONE
+	SFX Manager
+	Load alls sfxs from folder
+	Create Enum with all sfx names
+	Static class plays sfx at position

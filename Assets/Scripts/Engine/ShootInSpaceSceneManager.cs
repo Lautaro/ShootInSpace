@@ -7,6 +7,8 @@ public class ShootInSpaceSceneManager : MonoBehaviour
 {
     public static ShootInSpaceSceneManager Me;
 
+    public static Player Player;
+
     [SerializeField]
     GameObject[] edges;
 
@@ -31,11 +33,28 @@ public class ShootInSpaceSceneManager : MonoBehaviour
 
     }
 
-    private void StartGame()
-    {        
-        InvokeRepeating("CheckIfSpawnEnemies", 1f, 1f);
+    void OnGameOver()
+    {
+        Debug.Log("All is lost!");
     }
 
+    private void StartGame()
+    {
+        Player.OnGameOver = OnGameOver;
+        SfxManager.PlaySfx(SfxNames.PlayerStart.ToString());
+        InvokeRepeating("CheckIfSpawnEnemies", 1f, 1f);
+        InvokeRepeating("RegeneratePlayerShield", 1f, 1f);
+    }
+
+    void RegeneratePlayerShield()
+    {
+        if (Player.Energy < 50)
+        {
+            Player.AddEnergy(1f);
+            
+        }
+    }
+        
     void CheckIfSpawnEnemies()
     {
         //Throw dice 
@@ -57,7 +76,7 @@ public class ShootInSpaceSceneManager : MonoBehaviour
     {
 
         // get random start position 
-        var edge = edges[Random.Range(0, edges.Count() )];
+        var edge = edges[Random.Range(0, edges.Count())];
 
         // instantiate
         var bigasteroid = Instantiate(bigAsteroidPrefab, edge.transform.position, Quaternion.Euler(transform.rotation.eulerAngles));
@@ -68,11 +87,11 @@ public class ShootInSpaceSceneManager : MonoBehaviour
         bigasteroid.gameObject.SetActive(true);
 
         // add force towards center of screen
-        var targetPosition = new Vector3(Random.Range(-3, 3), Random.Range(-3, 3),00);
+        var targetPosition = new Vector3(Random.Range(-3, 3), Random.Range(-3, 3), 00);
         var forceAmount = Random.Range(500f, 3000f);
         rb2d.AddForce((targetPosition - bigasteroid.transform.position).normalized * forceAmount);
 
-        Debug.DrawLine(targetPosition, bigasteroid.transform.position,Color.red,3f);
+        Debug.DrawLine(targetPosition, bigasteroid.transform.position, Color.red, 3f);
 
     }
 }

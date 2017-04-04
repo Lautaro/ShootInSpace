@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LazerShot : MonoBehaviour {
+public class LazerShot : MonoBase {
 
     public float Speed;
+
+    void Awake()
+    {
+        EntityType =EntityType.LaserShot;
+    }
 
 	// Use this for initialization
 	void Start () {

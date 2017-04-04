@@ -7,13 +7,16 @@ public class BigAsteroid : Asteroid
 
     Vector2 velocity;
 
-
     [SerializeField]
     GameObject smallAsteroidPrefab;
 
     [SerializeField]
     bool isSpawning = true;
 
+    void Awake()
+    {
+        EntityType = EntityType.BigAsteroid;
+    }
 
     /// On creation collider is trigger. To enable it to pass the edges. 
     void OnTriggerExit2D(Collider2D collider)

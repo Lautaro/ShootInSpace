@@ -49,7 +49,6 @@ public class PlayerShield : MonoBehaviour
         // Set shield state
         if (shieldStrength >= 50)
         {
-            Debug.Log("Healthy");
             State = PlayerShieldState.Healthy;
         }
         else

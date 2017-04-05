@@ -255,6 +255,23 @@ public class Player : SpaceObject
         }
     }
 
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+
+        switch (collider.gameObject.GetComponent<MonoBase>().EntityType)
+        {
+       
+            case EntityType.EnergyPickup:
+                var pickUp = collider.gameObject.GetComponent<Pickup>();
+                pickUp.PickedUp();
+                Energy += 10;
+                break;
+            default:
+                break;
+        }
+    }
+
+
     void OnCollisionEnter2D(Collision2D collider)
     {
 

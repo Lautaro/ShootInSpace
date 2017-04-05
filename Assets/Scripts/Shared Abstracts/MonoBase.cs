@@ -26,6 +26,6 @@ public enum EntityType
     Player,
     LaserShot,
     SmallAsteroid, 
-    BigAsteroid
-
+    BigAsteroid,
+    EnergyPickup
 }

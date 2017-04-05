@@ -15,6 +15,7 @@ public class SpaceObject : MonoBase
     protected ParticleSystem damageAnimation;
     
     protected float deathDelay = 0f;
+
     
     [SerializeField]
     float hitPoints;
@@ -33,7 +34,6 @@ public class SpaceObject : MonoBase
         rb2d = GetComponent<Rigidbody2D>();
 
     }
-
  
     protected void Accelerate(float force)
     {
@@ -52,6 +52,9 @@ public class SpaceObject : MonoBase
 
     }
 
+
+
+
     public void PlaySfx(SfxNames sfx, float volume)
     {
          SfxManager.PlaySfx(sfx.ToString(),0f,volume);
@@ -66,7 +69,7 @@ public class SpaceObject : MonoBase
         deathAnimation.Play();
         rb2d.simulated = false;
         GetComponent<Collider2D>().enabled = false;
+        
     }
-
 }
 

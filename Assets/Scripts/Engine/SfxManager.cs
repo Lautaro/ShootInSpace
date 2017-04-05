@@ -23,9 +23,8 @@ public class SfxManager : MonoBehaviour
     private static Dictionary<string, AudioClip> dynamicSfx;
 
     #region setup
-    void Start()
+    void Awake()
     {
-
         sfxs = new Dictionary<string, AudioClip>();
 
         if (!instance)
@@ -36,8 +35,14 @@ public class SfxManager : MonoBehaviour
         {
             Debug.LogError("Only one SfxManager should be present in the same scene");
         }
-
         LoadSfxs();
+    }
+
+    void Start()
+    {
+
+
+      
     }
 
     private static AudioSource GetAudioPlayer()

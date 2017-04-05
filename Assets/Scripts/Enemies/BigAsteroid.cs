@@ -7,6 +7,10 @@ public class BigAsteroid : Asteroid
 
     Vector2 velocity;
 
+
+    [SerializeField]
+    GameObject pickUp;
+
     [SerializeField]
     GameObject smallAsteroidPrefab;
 
@@ -33,7 +37,7 @@ public class BigAsteroid : Asteroid
     {
 
         // instantiate
-        var smallAsteroid = Instantiate(smallAsteroidPrefab, transform.position, Quaternion.Euler(transform.rotation.eulerAngles));
+        var smallAsteroid =  ShootInSpaceSceneManager.SpawnObject(smallAsteroidPrefab, transform.position);
         var rb2d = smallAsteroid.GetComponent<Rigidbody2D>();
 
         // set up
@@ -51,6 +55,8 @@ public class BigAsteroid : Asteroid
 
     protected override void Die()
     {
+        
+
         var amountOfAsteroids = Random.Range(1, 4);
 
         for (int i = 0; i < amountOfAsteroids; i++)
@@ -59,5 +65,9 @@ public class BigAsteroid : Asteroid
         }
 
         base.Die();
+
+        // Spawn PickUp
+        ShootInSpaceSceneManager.SpawnObject(pickUp, transform.position);
+
     }
 }

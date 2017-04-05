@@ -34,7 +34,7 @@ public class Asteroid : SpaceObject {
     protected override void Die()
     {
         ShootInSpaceSceneManager.Me.enemies.Remove(gameObject);
-       
+        Destroy(gameObject, 3f);
         base.Die();
     }
 

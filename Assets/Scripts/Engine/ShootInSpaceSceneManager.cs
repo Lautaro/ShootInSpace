@@ -6,7 +6,6 @@ using UnityEngine;
 public class ShootInSpaceSceneManager : MonoBehaviour
 {
     public static ShootInSpaceSceneManager Me;
-
     public static Player Player;
 
     [SerializeField]
@@ -50,7 +49,7 @@ public class ShootInSpaceSceneManager : MonoBehaviour
     {
         if (Player.Energy < 50)
         {
-            Player.AddEnergy(1f);
+            Player.AddEnergy(0.5f);
             
         }
     }
@@ -71,15 +70,17 @@ public class ShootInSpaceSceneManager : MonoBehaviour
             }
         }
     }
+    
 
     private void SpawnBigAsteroid()
     {
 
         // get random start position 
         var edge = edges[Random.Range(0, edges.Count())];
-
+        var spawner = edge.transform.Find("SpawnZone");
+   
         // instantiate
-        var bigasteroid = Instantiate(bigAsteroidPrefab, edge.transform.position, Quaternion.Euler(transform.rotation.eulerAngles));
+        var bigasteroid = SpawnObject(bigAsteroidPrefab, spawner.transform.position);
         var rb2d = bigasteroid.GetComponent<Rigidbody2D>();
 
         // set up
@@ -88,10 +89,17 @@ public class ShootInSpaceSceneManager : MonoBehaviour
 
         // add force towards center of screen
         var targetPosition = new Vector3(Random.Range(-3, 3), Random.Range(-3, 3), 00);
-        var forceAmount = Random.Range(500f, 3000f);
+        var forceAmount = Random.Range(1000f, 6000f);
         rb2d.AddForce((targetPosition - bigasteroid.transform.position).normalized * forceAmount);
 
         Debug.DrawLine(targetPosition, bigasteroid.transform.position, Color.red, 3f);
 
+    }
+
+    public static GameObject SpawnObject(GameObject prefab, Vector2 position)
+    {
+
+        var v3 = new Vector3(position.x,position.y, 0);
+        return Instantiate(prefab, v3, Quaternion.Euler(Me.transform.rotation.eulerAngles));
     }
 }

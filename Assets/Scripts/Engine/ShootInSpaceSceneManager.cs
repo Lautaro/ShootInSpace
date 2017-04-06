@@ -6,7 +6,7 @@ using UnityEngine;
 public class ShootInSpaceSceneManager : MonoBehaviour
 {
     public static ShootInSpaceSceneManager Me;
-    public static Player Player;
+    public Player Player;
 
     [SerializeField]
     GameObject[] edges;
@@ -20,39 +20,64 @@ public class ShootInSpaceSceneManager : MonoBehaviour
     [SerializeField]
     GameObject bigAsteroidPrefab;
 
+    public GameState state;
+
+    public StartMenu StartMenu;
+    public GameObject Hud;
+    
+
     void Awake()
     {
+        state = GameState.StartMenu;
         Me = this;
     }
 
     // Use this for initialization
     void Start()
     {
-        StartGame();
+        //StartGame();
+        GoToStartMenu();
+
+        //Bind StartMenus StartGame action to StartGame()
+        StartMenu.StartGame = StartGame;
 
     }
+
+    private void GoToStartMenu()
+    {
+        state = GameState.StartMenu;
+        Hud.SetActive( false);        
+        StartMenu.enabled = true;
+     }
 
     void OnGameOver()
     {
         Debug.Log("All is lost!");
+        Player.gameObject.SetActive(false);
+        foreach (GameObject thing in enemies)
+        {
+            Destroy(thing);           
+        }
+        enemies.Clear();
+        CancelInvoke();
+        Invoke("GoToStartMenu", 1f);
     }
 
     private void StartGame()
     {
+        print("starting game");
+        state = GameState.InGame;
         Player.OnGameOver = OnGameOver;
+        Player.gameObject.SetActive(true);
+        Player.Lifes = 1;
+        Player.SetupNewShip();
         SfxManager.PlaySfx(SfxNames.PlayerStart.ToString());
         InvokeRepeating("CheckIfSpawnEnemies", 1f, 1f);
-        InvokeRepeating("RegeneratePlayerShield", 1f, 1f);
+
+        Hud.SetActive(true);
     }
 
-    void RegeneratePlayerShield()
-    {
-        if (Player.Energy < 50)
-        {
-            Player.AddEnergy(0.5f);
-            
-        }
-    }
+ 
         
     void CheckIfSpawnEnemies()
     {
@@ -71,7 +96,6 @@ public class ShootInSpaceSceneManager : MonoBehaviour
         }
     }
     
-
     private void SpawnBigAsteroid()
     {
 
@@ -102,4 +126,11 @@ public class ShootInSpaceSceneManager : MonoBehaviour
         var v3 = new Vector3(position.x,position.y, 0);
         return Instantiate(prefab, v3, Quaternion.Euler(Me.transform.rotation.eulerAngles));
     }
+}
+
+public enum GameState
+{
+    StartMenu, 
+    InGame,
+    InGame_Pause
 }

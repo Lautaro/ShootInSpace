@@ -37,11 +37,7 @@ public class Player : SpaceObject
         get { return lifes; }
         set
         {
-            lifes = value;
-            if (value < 1)
-            {
-                OnGameOver();
-            }
+            lifes = value;         
         }
     }
 
@@ -79,37 +75,50 @@ public class Player : SpaceObject
 
     #endregion
 
-    void Awake()
+    #region SET UP PLAYER
+
+
+    protected override void Awake()
     {
+        base.Awake();
+        print(rb2d);
         startPosition = transform.position;
         EntityType = EntityType.Player;
-        ShootInSpaceSceneManager.Player = this;
-
-    }
-
-
-
-    // Use this for initialization
-    protected override void Start()
-    {
-        base.Start();
-        SetupNewShip();
-    }
-
-    public void SetupNewShip()
-    {
-        transform.position = new Vector2(0, 0);
-        State = PlayerState.Playing;
-        Shield.ReActivateShield();
-        Energy = 100;
-        GetComponent<Collider2D>().enabled = true;
-        GetComponentInChildren<SpriteRenderer>().enabled = true;
-        rb2d.simulated = true;
-        EnableInvisibility(2f);
+        ShootInSpaceSceneManager.Me.Player = this;
         
 
     }
 
+    void Start()
+    {
+             
+        ShootInSpaceSceneManager.Me.Player = this;
+
+    }
+
+    void OnEnabled()
+    {
+        SetupNewShip();
+    }
+    public void SetupNewShip()
+    {
+        gameObject.SetActive(true);
+        Debug.Log("Setting up ship");
+        transform.position = new Vector2(0, 0);
+        State = PlayerState.Playing;
+        Shield.ReActivateShield();
+        Energy = 1;
+        GetComponent<Collider2D>().enabled = true;
+        GetComponentInChildren<SpriteRenderer>().enabled = true;        
+        rb2d.simulated = true;
+        EnableInvisibility(2f);
+        InvokeRepeating("RegeneratePlayerShield", 1f, 1f);
+
+
+    }
+    #endregion
+
+    #region GAME LOGIC
     void Update()
     {
         // ROTATE SHIP TOWARDS MOUSE
@@ -131,14 +140,13 @@ public class Player : SpaceObject
 
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
 
         if (Input.GetKey(KeyCode.Mouse1))
         {
 
-            SfxManager.PlayDynamicSfxOnGo(SfxNames.Acceleration.ToString(), gameObject, true);
+            SfxManager.PlayLoopingSfxOnGo(SfxNames.Acceleration.ToString(), gameObject, true);
 
             accelerationAnimation.Play();
 
@@ -146,7 +154,7 @@ public class Player : SpaceObject
         }
         else
         {
-            SfxManager.StopDynamicSfxOnGO(SfxNames.Acceleration.ToString(), gameObject);
+            SfxManager.StopLoopingSfxOnGO(SfxNames.Acceleration.ToString(), gameObject);
             accelerationAnimation.Stop();
         }
 
@@ -193,7 +201,7 @@ public class Player : SpaceObject
 
                 if (Energy - damage < 0)
                 {// Prevent sudden death if shield is active
-                    
+
                     Energy = 0;
                 }
                 else
@@ -239,38 +247,44 @@ public class Player : SpaceObject
 
     protected override void Die()
     {
+        print("Dead");
         base.Die();
         Lifes -= 1;
+        print("Lifes = " + Lifes);
+        SfxManager.StopLoopingSfxOnGO(SfxNames.Acceleration.ToString(), gameObject);
 
         if (Lifes <= 0)
         {
             State = PlayerState.GameOver;
-            OnGameOver();
+            print("Game Over in three seconds");
+            CancelInvoke();
+            StopAllCoroutines();
+            Invoke("OnGameOver", 1f);
+            
         }
         else
         {
             rb2d.simulated = false;
             State = PlayerState.Respawning;
+            print("New ship in two seconds");
             Invoke("SetupNewShip", 2f);
         }
     }
 
     void OnTriggerEnter2D(Collider2D collider)
     {
-
         switch (collider.gameObject.GetComponent<MonoBase>().EntityType)
         {
-       
+
             case EntityType.EnergyPickup:
                 var pickUp = collider.gameObject.GetComponent<Pickup>();
                 pickUp.PickedUp();
-                Energy += 10;
+                Energy += 20;
                 break;
             default:
                 break;
         }
     }
-
 
     void OnCollisionEnter2D(Collision2D collider)
     {
@@ -301,6 +315,16 @@ public class Player : SpaceObject
         Energy += p;
     }
 
+    void RegeneratePlayerShield()
+    {
+        if (Energy < 50)
+        {
+            AddEnergy(0.5f);
+
+        }
+    }
+
+    #endregion
 
 
     public enum PlayerState

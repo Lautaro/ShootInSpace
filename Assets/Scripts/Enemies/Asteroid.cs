@@ -10,8 +10,8 @@ public class Asteroid : SpaceObject {
     
 
 	// Use this for initialization
-	protected override void Start () {
-        base.Start();
+	protected override void Awake () {
+        base.Awake();
 
     }
 

@@ -13,7 +13,7 @@ public class SpaceObject : MonoBase
     protected ParticleSystem deathAnimation;
     [SerializeField]
     protected ParticleSystem damageAnimation;
-    
+    protected Rigidbody2D rb2d;
     protected float deathDelay = 0f;
 
     
@@ -26,10 +26,8 @@ public class SpaceObject : MonoBase
 
     }
 
-    protected Rigidbody2D rb2d;
-
     // Use this for initialization
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
 
@@ -67,6 +65,10 @@ public class SpaceObject : MonoBase
         deathDelay = 4f;
         GetComponentInChildren<SpriteRenderer>().enabled = false;
         deathAnimation.Play();
+        if (!rb2d)
+        {
+            print("Im guilty: "+ name);
+        }
         rb2d.simulated = false;
         GetComponent<Collider2D>().enabled = false;
         

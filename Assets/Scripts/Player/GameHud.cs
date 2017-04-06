@@ -13,9 +13,9 @@ public class GameHud : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
-        playerLife.text = "LIFES " + ShootInSpaceSceneManager.Player.Lifes;
-        playerEnergy.text = "ENERGY " + ShootInSpaceSceneManager.Player.Energy;
+    
+        playerLife.text = "LIFES " + ShootInSpaceSceneManager.Me.Player.Lifes;
+        playerEnergy.text = "ENERGY " + ShootInSpaceSceneManager.Me.Player.Energy;
 		
 	}
 }

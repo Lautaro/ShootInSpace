@@ -85,8 +85,7 @@ public class SfxManager : MonoBehaviour
     /// <param name="sfx">nameo of sfx</param>
     /// <param name="go">object soundisconnected to</param>
     /// <param name="loop"></param>
-    /// <returns></returns>
-    public static void PlayDynamicSfxOnGo(string sfx, GameObject go, bool loop = true)
+    public static void PlayLoopingSfxOnGo(string sfx, GameObject go, bool loop = true)
     {
         if (!instance.Mute)
         {
@@ -112,7 +111,7 @@ public class SfxManager : MonoBehaviour
         }
     }
 
-    public static void StopDynamicSfxOnGO(string sfx, GameObject go)
+    public static void StopLoopingSfxOnGO(string sfx, GameObject go)
     {
         foreach (var audioSource in go.GetComponents<AudioSource>())
         {

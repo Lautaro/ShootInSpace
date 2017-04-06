@@ -17,8 +17,9 @@ public class BigAsteroid : Asteroid
     [SerializeField]
     bool isSpawning = true;
 
-    void Awake()
+protected override   void Awake()
     {
+        base.Awake();
         EntityType = EntityType.BigAsteroid;
     }
 

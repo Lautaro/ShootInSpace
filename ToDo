@@ -1,7 +1,8 @@
 TO DO 
 
 Restart games on Game Over
-Big Asteroids leaves Energy Pick Up
+Show Logo
+Start Menu
 Big Asteroids can have three different sprite and collider shape
 Some kind of level wave system
 
@@ -16,4 +17,6 @@ Some kind of level wave system
 	Implement collider identification system with a MonoBase class
 	When shield fails player dies on impact and looses a life
 	Respawn untill end of lifes
+	Big Asteroids leaves Energy Pick Up
+	
 	

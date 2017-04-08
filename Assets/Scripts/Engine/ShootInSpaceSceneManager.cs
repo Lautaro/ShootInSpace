@@ -9,7 +9,7 @@ public class ShootInSpaceSceneManager : MonoBehaviour
     public Player Player;
 
     [SerializeField]
-    GameObject[] edges;
+    GameObject[] edges; 
 
     [SerializeField]
     public List<GameObject> enemies = new List<GameObject>();
@@ -56,7 +56,7 @@ public class ShootInSpaceSceneManager : MonoBehaviour
         Player.gameObject.SetActive(false);
         foreach (GameObject thing in enemies)
         {
-            Destroy(thing);           
+            Destroy(thing);
         }
         enemies.Clear();
         CancelInvoke();
@@ -69,7 +69,7 @@ public class ShootInSpaceSceneManager : MonoBehaviour
         state = GameState.InGame;
         Player.OnGameOver = OnGameOver;
         Player.gameObject.SetActive(true);
-        Player.Lifes = 1;
+        Player.Lifes = 3;
         Player.SetupNewShip();
         SfxManager.PlaySfx(SfxNames.PlayerStart.ToString());
         InvokeRepeating("CheckIfSpawnEnemies", 1f, 1f);

@@ -24,6 +24,7 @@ public class Player : SpaceObject
 
     [SerializeField]
     public Action OnGameOver;
+    public Action ONCuck;
 
     [SerializeField]
     float gunCoolDownTime;
@@ -107,12 +108,13 @@ public class Player : SpaceObject
         transform.position = new Vector2(0, 0);
         State = PlayerState.Playing;
         Shield.ReActivateShield();
-        Energy = 1;
+        Energy = 100;
         GetComponent<Collider2D>().enabled = true;
         GetComponentInChildren<SpriteRenderer>().enabled = true;        
         rb2d.simulated = true;
         EnableInvisibility(2f);
         InvokeRepeating("RegeneratePlayerShield", 1f, 1f);
+        Debug.Log(ONCuck );
 
 
     }
@@ -179,6 +181,7 @@ public class Player : SpaceObject
 
     void FireBullet()
     {
+ 
         // Shoot only if there is enough energy and player is alive
         if (Energy - bulletEnergyCost > 0
             && (State == PlayerState.Playing || State == PlayerState.Playing_Invinsible))
@@ -216,9 +219,9 @@ public class Player : SpaceObject
                 Energy -= damage;
             }
 
-
+          
             if (Energy < 0)
-            {
+            {  
                 Die();
             }
             else
@@ -254,12 +257,9 @@ public class Player : SpaceObject
         SfxManager.StopLoopingSfxOnGO(SfxNames.Acceleration.ToString(), gameObject);
 
         if (Lifes <= 0)
-        {
-            State = PlayerState.GameOver;
-            print("Game Over in three seconds");
-            CancelInvoke();
-            StopAllCoroutines();
-            Invoke("OnGameOver", 1f);
+        {   
+            print("Game Over in one seconds");
+            Invoke("GameOver", 3f);
             
         }
         else
@@ -268,7 +268,16 @@ public class Player : SpaceObject
             State = PlayerState.Respawning;
             print("New ship in two seconds");
             Invoke("SetupNewShip", 2f);
+
         }
+    }
+
+    void GameOver()
+    {
+        CancelInvoke();
+        StopAllCoroutines();
+        State = PlayerState.GameOver;
+        OnGameOver();
     }
 
     void OnTriggerEnter2D(Collider2D collider)

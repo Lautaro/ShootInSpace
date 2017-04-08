@@ -65,10 +65,6 @@ public class SpaceObject : MonoBase
         deathDelay = 4f;
         GetComponentInChildren<SpriteRenderer>().enabled = false;
         deathAnimation.Play();
-        if (!rb2d)
-        {
-            print("Im guilty: "+ name);
-        }
         rb2d.simulated = false;
         GetComponent<Collider2D>().enabled = false;
         

@@ -58,9 +58,11 @@ public class ShootInSpaceSceneManager : MonoBehaviour
 
         // get random start position 
         var edge = edges[Random.Range(0, edges.Count() )];
+        var startPosition = edge.transform.position;
+        startPosition.z = -1;
 
         // instantiate
-        var bigasteroid = Instantiate(bigAsteroidPrefab, edge.transform.position, Quaternion.Euler(transform.rotation.eulerAngles));
+        var bigasteroid = Instantiate(bigAsteroidPrefab, startPosition, Quaternion.Euler(transform.rotation.eulerAngles));
         var rb2d = bigasteroid.GetComponent<Rigidbody2D>();
 
         // set up
